@@ -10,8 +10,43 @@ const VALID_PROPERTIES = [
   "reservation_time",
   "people",
 ];
-let today = new Date();
-const todayDate = today.toISOString().split("T")[0];
+
+function hasValidDate(req, res, next) {
+  let today = new Date();
+  const todayDate = today.toISOString().split("T")[0];
+  //try to create a date object if the format is correct
+  try {
+    if(req.body.date)
+    const tryDate = new Date(req.body.date);
+  } catch (error) {
+    return next({
+      status: 400,
+      message: error,
+    });
+  }
+
+  const reservation_date = req.body.date
+    ? new Date(req.body.date)
+    : todayDate;
+
+  const dateInPast = (dateToTest) => {
+    return dateToTest.setHours(0,0,0,0) <= today.setHours(0,0,0,0) ;
+  }
+  
+  if (reservation_date.getDay() == 2) {
+
+    return next({
+      status: 400,
+      message: "The restaurant is closed on Tuesdays",
+    })
+  }else if(dateInPast(reservation_date)){
+    return next({
+      status: 400,
+      message: "Can't make a reservation in the past",
+    })
+  }
+}
+
 const hasRequiredProperties = hasProperties(...VALID_PROPERTIES);
 
 function hasOnlyValidProperties(req, res, next) {
@@ -48,6 +83,7 @@ module.exports = {
   create: [
     hasOnlyValidProperties,
     hasRequiredProperties,
+    hasValidDate,
     asyncErrorBoundary(create),
   ],
 };
