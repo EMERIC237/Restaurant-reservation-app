@@ -45,6 +45,23 @@ function hasValidDate(req, res, next) {
       message: "Can't make a reservation in the past",
     })
   }
+  next();
+}
+
+function hasValidTime(req,res,next) {
+  let reservation_time = req.body.time
+  if (reservation_time < "10:30") {
+    return next({
+      status: 400,
+      message: "The restaurant open at 10:30 AM",
+    })
+  } else if(reservation_time > "21:30") {
+    return next({
+      status: 400,
+      message: "The restaurant will close soon !",
+    })
+  }
+  next();
 }
 
 const hasRequiredProperties = hasProperties(...VALID_PROPERTIES);
@@ -84,6 +101,7 @@ module.exports = {
     hasOnlyValidProperties,
     hasRequiredProperties,
     hasValidDate,
+    hasValidTime,
     asyncErrorBoundary(create),
   ],
 };
