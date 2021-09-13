@@ -2,7 +2,6 @@ const reservationsService = require("./reservations.service");
 const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const VALID_PROPERTIES = [
-  "reservation_id",
   "first_name",
   "last_name",
   "mobile_number",
