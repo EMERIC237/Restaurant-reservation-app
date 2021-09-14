@@ -20,6 +20,10 @@
 .env.production.local
 .vercel
 
+##VSCODE history
+.history
+
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
