@@ -15,8 +15,9 @@ function hasValidDate(req, res, next) {
   const todayDate = today.toISOString().split("T")[0];
   //try to create a date object if the format is correct
   try {
-    if(req.body.date)
-    const tryDate = new Date(req.body.date);
+    if (req.body.date) {
+      let tryDate = new Date(req.body.date);
+    }
   } catch (error) {
     return next({
       status: 400,
@@ -24,41 +25,38 @@ function hasValidDate(req, res, next) {
     });
   }
 
-  const reservation_date = req.body.date
-    ? new Date(req.body.date)
-    : todayDate;
+  const reservation_date = req.body.date ? new Date(req.body.date) : todayDate;
 
   const dateInPast = (dateToTest) => {
-    return dateToTest.setHours(0,0,0,0) <= today.setHours(0,0,0,0) ;
-  }
-  
-  if (reservation_date.getDay() == 2) {
+    return dateToTest.setHours(0, 0, 0, 0) <= today.setHours(0, 0, 0, 0);
+  };
 
+  if (reservation_date.getDay() == 2) {
     return next({
       status: 400,
       message: "The restaurant is closed on Tuesdays",
-    })
-  }else if(dateInPast(reservation_date)){
+    });
+  } else if (dateInPast(reservation_date)) {
     return next({
       status: 400,
       message: "Can't make a reservation in the past",
-    })
+    });
   }
   next();
 }
 
-function hasValidTime(req,res,next) {
-  let reservation_time = req.body.time
+function hasValidTime(req, res, next) {
+  let reservation_time = req.body.time;
   if (reservation_time < "10:30") {
     return next({
       status: 400,
       message: "The restaurant open at 10:30 AM",
-    })
-  } else if(reservation_time > "21:30") {
+    });
+  } else if (reservation_time > "21:30") {
     return next({
       status: 400,
       message: "The restaurant will close soon !",
-    })
+    });
   }
   next();
 }
@@ -83,7 +81,9 @@ function hasOnlyValidProperties(req, res, next) {
  * List handler for reservation resources
  */
 async function listPerDate(req, res, next) {
-  const { date = todayDate } = req.query;
+  let todayDate = new Date();
+  const date = req.query.date ? req.query.date : todayDate;
+  console.log(date);
   res.json({
     data: await reservationsService.listPerDate(date),
   });

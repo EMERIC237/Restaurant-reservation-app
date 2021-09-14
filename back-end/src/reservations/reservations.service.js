@@ -13,7 +13,6 @@ function listPerDate(date) {
   return knex("reservations")
     .select("*")
     .where({ reservation_date: date })
-    .groupBy("reservation_time")
     .orderBy("reservation_time");
 }
 
