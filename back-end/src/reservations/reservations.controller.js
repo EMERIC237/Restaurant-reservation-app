@@ -8,7 +8,9 @@ const VALID_PROPERTIES = [
   "reservation_date",
   "reservation_time",
   "people",
+  "status",
 ];
+const VALID_STATUS = ["booked", "seated", "finished"];
 
 const isDate = (dateStr) => {
   return (
@@ -130,6 +132,34 @@ function hasOnlyValidProperties(req, res, next) {
   }
   next();
 }
+function hasValidPostStatus(req, res, next) {
+  const { status } = req.body.data;
+  if (status === "finished" || status === "seated") {
+    return next({
+      status: 400,
+      message:
+        "A reservation cannot be created with a seated or finished status",
+    });
+  }
+  next();
+}
+function hasValidStatus(req, res, next) {
+  const { status } = req.body.data;
+  const currentStatus = res.locals.reservation.status;
+  if (!VALID_STATUS.includes(status)) {
+    return next({
+      status: 400,
+      message: "This is an unknown status",
+    });
+  }
+  if (currentStatus === "finished") {
+    return next({
+      status: 400,
+      message: "A finished reservation can't be updated",
+    });
+  }
+  next();
+}
 
 /**
  * List handler for reservation resources
@@ -165,6 +195,13 @@ async function create(req, res, next) {
   res.status(201).json({ data });
 }
 
+async function updateStatus(req, res, next) {
+  const { reservation_id } = res.locals.reservation;
+  const { status } = req.body.data;
+  const data = await reservationsService.updateStatus(reservation_id, status);
+  res.json({ data });
+}
+
 module.exports = {
   listPerDate: asyncErrorBoundary(listPerDate),
   read: [asyncErrorBoundary(reservationExists), read],
@@ -174,6 +211,12 @@ module.exports = {
     hasValidDate,
     hasValidTime,
     hasValidNumber,
+    hasValidPostStatus,
     asyncErrorBoundary(create),
+  ],
+  updateStatus: [
+    asyncErrorBoundary(reservationExists),
+    hasValidStatus,
+    asyncErrorBoundary(updateStatus),
   ],
 };
