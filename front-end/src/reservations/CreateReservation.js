@@ -6,6 +6,7 @@ import ReservationForm from "./ReservationForm";
 export default function CreateReservation() {
   const history = useHistory();
   function submitHandler(reservation) {
+    console.log(reservation);
     console.log("reservation submitted");
     createReservation(reservation).then((savedReservation) =>
       history.push(`/dashboard?date=${savedReservation.reservation_date}`)

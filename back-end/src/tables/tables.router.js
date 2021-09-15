@@ -9,11 +9,15 @@ const controller = require("./tables.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 
 router
+  .route("/")
+  .post(controller.create)
+  .get(controller.list)
+  .all(methodNotAllowed);
+
+router
   .route("/:table_id/seat/")
   .put(controller.update)
   .delete(controller.unAssign)
   .all(methodNotAllowed);
-router.route("/new").post(controller.create).all(methodNotAllowed);
-router.post("/").get(controller.list).all(methodNotAllowed);
 
 module.exports = router;

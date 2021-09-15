@@ -1,8 +1,8 @@
 /**
  * Take in a list a properties
  * Check if the form has all those properties when creating a new item(reservation or table)
- * @param  {...any} properties 
- * @returns 
+ * @param  {...any} properties
+ * @returns
  */
 function hasProperties(...properties) {
   return function (req, res, next) {
@@ -10,8 +10,8 @@ function hasProperties(...properties) {
 
     try {
       properties.forEach((property) => {
-        if (!data.property) {
-          const error = new Error(`A '${property}' property is required `);
+        if (!data[property]) {
+          const error = new Error(`A '${property}' property is required.`);
           error.status = 400;
           throw error;
         }

@@ -11,10 +11,10 @@ function create(table) {
     .then((createdRecords) => createdRecords[0]);
 }
 function read(table_id) {
-  return knex("table").select("*").where({ table_id }).first();
+  return knex("tables").select("*").where({ table_id }).first();
 }
 function list() {
-  return knex("tables").select("*").groupBy("table_name").orderBy("table_name");
+  return knex("tables").select("*").orderBy("table_name");
 }
 function update(table_id, reservation_id) {
   return knex("tables")
