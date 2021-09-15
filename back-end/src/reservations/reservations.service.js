@@ -9,7 +9,7 @@ const knex = require("../db/connection");
 //   return knex("reservations").select("*");
 // }
 function read(reservation_id) {
-  return knex("reservations").select("*").where({ reservation_id });
+  return knex("reservations").select("*").where({ reservation_id }).first();
 }
 function listPerDate(date) {
   return knex("reservations")

@@ -21,6 +21,7 @@ const isDate = (dateStr) => {
 const dateInPast = (dateToTest) => {
   return dateToTest.setHours(0, 0, 0, 0) <= new Date().setHours(0, 0, 0, 0);
 };
+
 const isTime = (timeStr) => {
   if (timeStr.search(/^\d{2}:\d{2}$/) != -1) {
     return (
@@ -134,16 +135,23 @@ function hasOnlyValidProperties(req, res, next) {
  * List handler for reservation resources
  */
 async function reservationExists(req, res, next) {
-  const reservation = await reservationsService.read(req.params.reservation_id);
+  const { reservation_id } = req.params;
+  const reservation = await reservationsService.read(reservation_id);
   if (reservation) {
     res.locals.reservation = reservation;
     return next();
   }
-  next({ status: 404, message: `reservation cannot be found.` });
+  next({
+    status: 404,
+    message: `reservation with id ${reservation_id} could not be found.`,
+  });
 }
-async function read(req, res, next) {
-  res.json({ data: res.locals.reservation });
+
+function read(req, res) {
+  const { reservation: data } = res.locals;
+  res.json({ data });
 }
+
 async function listPerDate(req, res, next) {
   let todayDate = new Date();
   const date = req.query.date ? req.query.date : todayDate;
@@ -159,7 +167,7 @@ async function create(req, res, next) {
 
 module.exports = {
   listPerDate: asyncErrorBoundary(listPerDate),
-  read: [reservationExists, asyncErrorBoundary(read)],
+  read: [asyncErrorBoundary(reservationExists), read],
   create: [
     hasOnlyValidProperties,
     hasRequiredProperties,

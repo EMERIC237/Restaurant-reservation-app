@@ -18,18 +18,14 @@ function list() {
 }
 function update(table_id, reservation_id) {
   return knex("tables")
-    .select("*")
     .where({ table_id })
-    .update(reservation_id, "reservation_id")
-    .then((updatedRecords) => updatedRecords[0]);
+    .update({ reservation_id }, ["table_id", "reservation_id"]);
 }
 
 function unAssign(table_id) {
   return knex("tables")
-    .select("*")
     .where({ table_id })
-    .update(null, "reservation_id")
-    .then((updatedRecords) => updatedRecords[0]);
+    .update({ reservation_id: null }, ["table_id", "reservation_id"]);
 }
 module.exports = {
   create,

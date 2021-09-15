@@ -8,21 +8,26 @@ const VALID_PROPERTIES = ["table_name", "capacity"];
 const hasRequiredProperties = hasProperties(...VALID_PROPERTIES);
 
 async function reservationExists(req, res, next) {
-  const reservation = await readReservation(req.body.data.reservation_id);
+  const { reservation_id } = req.body.data;
+  const reservation = await readReservation(reservation_id);
   if (reservation) {
     res.locals.reservation = reservation;
     return next();
   }
-  next({ status: 404, message: `reservation cannot be found.` });
+  next({
+    status: 404,
+    message: `reservation with id ${reservation_id} doesn't exist.`,
+  });
 }
 
 async function tableExists(req, res, next) {
-  const table = await tablesServices.read(req.params.table_id);
+  const { table_id } = req.params;
+  const table = await tablesServices.read(table_id);
   if (table) {
     res.locals.table = table;
     return next();
   }
-  next({ status: 404, message: `Table cannot be found.` });
+  next({ status: 404, message: `Table with if ${table_id} doesn't exist.` });
 }
 
 function hasValidProperties(req, res, next) {
@@ -73,6 +78,16 @@ function isTableFree(req, res, next) {
   next();
 }
 
+function isTableOccupied(req, res, next) {
+  if (res.locals.table.reservation_id === null) {
+    return next({
+      status: 400,
+      message: "The table is not occupied",
+    });
+  }
+  next();
+}
+
 function isCapacityEnough(req, res, next) {
   if (res.locals.reservation.people > res.locals.table.capacity) {
     return next({
@@ -112,12 +127,16 @@ module.exports = {
     asyncErrorBoundary(create),
   ],
   update: [
+    hasValidUpdateProperties,
     asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(tableExists),
-    hasValidUpdateProperties,
     isTableFree,
     isCapacityEnough,
     asyncErrorBoundary(update),
   ],
-  unAssign: [asyncErrorBoundary(tableExists), asyncErrorBoundary(unAssign)],
+  unAssign: [
+    asyncErrorBoundary(tableExists),
+    isTableOccupied,
+    asyncErrorBoundary(unAssign),
+  ],
 };
