@@ -8,9 +8,8 @@ const VALID_PROPERTIES = [
   "reservation_date",
   "reservation_time",
   "people",
-  "status",
 ];
-const VALID_STATUS = ["booked", "seated", "finished"];
+const VALID_STATUS = ["booked", "seated", "finished", "cancelled"];
 
 const isDate = (dateStr) => {
   return (
@@ -122,7 +121,7 @@ const hasRequiredProperties = hasProperties(...VALID_PROPERTIES);
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
   const invalidFields = Object.keys(data).filter(
-    (field) => !VALID_PROPERTIES.includes(field)
+    (field) => !VALID_PROPERTIES.includes(field) && field !== "status"
   );
   if (invalidFields.length) {
     return next({
@@ -146,7 +145,7 @@ function hasValidPostStatus(req, res, next) {
 function hasValidStatus(req, res, next) {
   const { status } = req.body.data;
   const currentStatus = res.locals.reservation.status;
-  if (!VALID_STATUS.includes(status)) {
+  if (status && !VALID_STATUS.includes(status)) {
     return next({
       status: 400,
       message: "This is an unknown status",
@@ -182,12 +181,18 @@ function read(req, res) {
   res.json({ data });
 }
 
-async function listPerDate(req, res, next) {
-  let todayDate = new Date();
-  const date = req.query.date ? req.query.date : todayDate;
-  res.json({
-    data: await reservationsService.listPerDate(date),
-  });
+async function list(req, res, next) {
+  const { mobile_number } = req.query;
+  if (mobile_number) {
+    const data = await reservationsService.search(mobile_number);
+    res.json({ data });
+  } else {
+    const todayDate = new Date();
+    const date = req.query.date ? req.query.date : todayDate;
+    res.json({
+      data: await reservationsService.listPerDate(date),
+    });
+  }
 }
 
 async function create(req, res, next) {
@@ -202,8 +207,16 @@ async function updateStatus(req, res, next) {
   res.json({ data });
 }
 
+async function update(req, res, next) {
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  const data = await reservationsService.update(updatedReservation);
+  res.json({ data });
+}
 module.exports = {
-  listPerDate: asyncErrorBoundary(listPerDate),
+  list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(reservationExists), read],
   create: [
     hasOnlyValidProperties,
@@ -218,5 +231,14 @@ module.exports = {
     asyncErrorBoundary(reservationExists),
     hasValidStatus,
     asyncErrorBoundary(updateStatus),
+  ],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    hasValidStatus,
+    hasRequiredProperties,
+    hasValidDate,
+    hasValidTime,
+    hasValidNumber,
+    asyncErrorBoundary(update),
   ],
 };
