@@ -8,6 +8,7 @@ const cors = require("cors");
 const errorHandler = require("./errors/errorHandler");
 const notFound = require("./errors/notFound");
 const reservationsRouter = require("./reservations/reservations.router");
+const tablesRouter = require("./tables/tables.router");
 
 const app = express();
 
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV === "production") {
 
 console.log(path.join(__dirname, "..", "..", "front-end/build"));
 app.use("/reservations", reservationsRouter);
+app.use("/tables", tablesRouter);
 
 app.use(notFound);
 app.use(errorHandler);
