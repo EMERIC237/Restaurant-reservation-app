@@ -14,6 +14,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+//point to the build folder if we are in the production environment
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "..", "front-end/build")));
 }

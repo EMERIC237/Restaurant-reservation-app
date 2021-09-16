@@ -7,11 +7,16 @@
     "type": "git",
     "url": "https://github.com/EMERIC237/Restaurant-reservation-app"
   },
+  "engines": {
+    "node": "14.17.1",
+    "npm":"6.14.13"
+  },
   "scripts": {
     "build": "npm -prefix front-end run build",
     "preinstall": "cd ./back-end && npm install",
     "install": "cd ./front-end && npm install",
     "start": "npx concurrently 'npm run start:backend' 'npm run start:frontend'",
+    "heroku-postbuild":"cd ./front-end && npm install && npm run build",
     "start:backend": "npm --prefix ./back-end start",
     "start:frontend": "npm --prefix ./front-end start",
     "start:dev": "npx concurrently 'npm run start:dev --prefix ./back-end' 'npm start --prefix ./front-end'",
