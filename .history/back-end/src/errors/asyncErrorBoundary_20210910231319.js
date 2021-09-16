@@ -1,0 +1,3 @@
+function asyncErrorBoundary(delegate, default) {
+    
+}
