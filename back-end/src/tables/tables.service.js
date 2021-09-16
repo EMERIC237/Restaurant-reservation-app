@@ -16,14 +16,12 @@ function read(table_id) {
 function list() {
   return knex("tables").select("*").orderBy("table_name");
 }
+
 function update(table_id, reservation_id) {
-  return knex("tables as t")
-    .join("reservations as r, t.reservation_id,r.reservation_id")
-    .where({ "t.table_id": table_id })
-    .update({ "t.reservation_id": reservation_id, "r.status": "seated" }, [
-      "table_id",
-      "reservation_id",
-    ]);
+  return knex("tables")
+    .where({ table_id })
+    .update({ reservation_id }, ["table_id", "reservation_id"])
+    .then((createdRecords) => createdRecords[0]);
 }
 
 function unAssign(table_id) {

@@ -1,5 +1,5 @@
 const tablesServices = require("./tables.service");
-const readReservation = require("../reservations/reservations.service").read;
+const reservationsServices = require("../reservations/reservations.service");
 const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
@@ -9,7 +9,7 @@ const hasRequiredProperties = hasProperties(...VALID_PROPERTIES);
 
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.body.data;
-  const reservation = await readReservation(reservation_id);
+  const reservation = await reservationsServices.read(reservation_id);
   if (reservation) {
     res.locals.reservation = reservation;
     return next();
@@ -18,6 +18,15 @@ async function reservationExists(req, res, next) {
     status: 404,
     message: `reservation with id ${reservation_id} doesn't exist.`,
   });
+}
+function isReservationSeated(req, res, next) {
+  if (res.locals.reservation.status === "seated") {
+    return next({
+      status: 400,
+      message: `The reservation is already seated`,
+    });
+  }
+  next();
 }
 
 async function tableExists(req, res, next) {
@@ -107,17 +116,33 @@ async function create(req, res, next) {
   res.status(201).json({ data });
 }
 
+// async function update(req, res, next) {
+//   const { reservation_id } = req.body.data;
+//   const table_id = res.locals.table.table_id;
+//   res.json({ data });
+// }
 async function update(req, res, next) {
   const { reservation_id } = req.body.data;
   const table_id = res.locals.table.table_id;
-  const data = await tablesServices.update(table_id, reservation_id);
-  res.json({ data });
+
+  const tableData = await tablesServices.update(table_id, reservation_id);
+  const reservationData = await reservationsServices.updateStatus(
+    reservation_id,
+    "seated"
+  );
+  tableData.status = reservationData.status;
+  res.json({ tableData });
 }
 
 async function unAssign(req, res, next) {
-  const table_id = res.locals.table.table_id;
-  const data = await tablesServices.unAssign(table_id);
-  res.json({ data });
+  const { table_id, reservation_id } = res.locals.table;
+  const reservationData = await reservationsServices.updateStatus(
+    reservation_id,
+    "finished"
+  );
+  const tableData = await tablesServices.unAssign(table_id);
+  tableData.status = reservationData.status;
+  res.json({ tableData });
 }
 module.exports = {
   list: asyncErrorBoundary(list),
@@ -132,6 +157,7 @@ module.exports = {
     asyncErrorBoundary(tableExists),
     isTableFree,
     isCapacityEnough,
+    isReservationSeated,
     asyncErrorBoundary(update),
   ],
   unAssign: [
