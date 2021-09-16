@@ -1,11 +1,11 @@
 {
-  "name": "starter-restaurant-reservation-back-end",
+  "name": "starter-restaurant-reservation-back-end-app",
   "version": "1.0.0",
   "description": "Starter code for restaurant reservation backend",
   "main": "src/server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Thinkful-Ed/starter-restaurant-reservation",
+    "url": "https://github.com/EMERIC237/Restaurant-reservation-app",
     "directory": "/back-end"
   },
   "scripts": {
