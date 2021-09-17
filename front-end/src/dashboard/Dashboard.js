@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import { listReservations } from "../utils/api";
-import ErrorAlert from "../layout/ErrorAlert";
+import Reservation from "./Reservation";
 
 /**
  * Defines the dashboard page.
@@ -11,26 +13,37 @@ import ErrorAlert from "../layout/ErrorAlert";
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-
-  useEffect(loadDashboard, [date]);
+  const search = useLocation().search;
+  const dateFromQuery = new URLSearchParams(search).get("date");
+  const dateForUrl = dateFromQuery ? dateFromQuery : date;
+  useEffect(loadDashboard, [dateForUrl]);
 
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations({ date }, abortController.signal)
+    listReservations(dateForUrl, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
     return () => abortController.abort();
+  }
+
+  if (reservationsError) {
+    return <div>NO RESERVATIONS HERE</div>;
   }
 
   return (
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+        <h4 className="mb-0">Reservations for the date :{dateForUrl}</h4>
       </div>
-      <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
+      {reservations.length === 0 ? (
+        <div>No Reservations For this date</div>
+      ) : (
+        <div>
+          <Reservation detailed={true} reservations={reservations} />
+        </div>
+      )}
     </main>
   );
 }

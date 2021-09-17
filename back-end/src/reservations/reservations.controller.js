@@ -188,7 +188,8 @@ async function list(req, res, next) {
     res.json({ data });
   } else {
     const todayDate = new Date();
-    const date = req.query.date ? req.query.date : todayDate;
+    const todayDateStr = todayDate.toISOString().slice(0, 10);
+    const date = req.query.date ? req.query.date : todayDateStr;
     res.json({
       data: await reservationsService.listPerDate(date),
     });
