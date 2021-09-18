@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function ReservationForm({ onSubmit, onCancel }) {
+function ReservationForm({ onSubmit, onCancel, creationError }) {
   const initialState = {
     first_name: "",
     last_name: "",
@@ -61,8 +61,8 @@ function ReservationForm({ onSubmit, onCancel }) {
               className="form-control"
               value={reservation.mobile_number}
               required={true}
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-              placeholder="000-000-000"
+              // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              // placeholder="000-000-000"
               onChange={changeHandler}
             />
           </div>
@@ -106,6 +106,9 @@ function ReservationForm({ onSubmit, onCancel }) {
               onChange={changeHandler}
             />
           </div>
+          {creationError ? (
+            <div className="alert alert-danger"> {creationError.message}</div>
+          ) : null}
           <button
             type="button"
             className="btn btn-secondary mr-2"

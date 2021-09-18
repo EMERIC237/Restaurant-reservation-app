@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 
 import { listReservations } from "../utils/api";
 import Reservation from "./Reservation";
+import formatReservationDate from "../utils/format-reservation-date";
+import formatReservationTime from "../utils/format-reservation-time";
 
 /**
  * Defines the dashboard page.
@@ -22,13 +24,23 @@ function Dashboard({ date }) {
     const abortController = new AbortController();
     setReservationsError(null);
     listReservations(dateForUrl, abortController.signal)
+      .then(formatReservationDate)
+      .then(formatReservationTime)
       .then(setReservations)
       .catch(setReservationsError);
     return () => abortController.abort();
   }
 
   if (reservationsError) {
-    return <div>NO RESERVATIONS HERE</div>;
+    return (
+      <main>
+        <h1>Dashboard</h1>
+        <div>Something went wrong !</div>
+        <p>
+          Error message: <b>{reservationsError.message}</b>
+        </p>
+      </main>
+    );
   }
 
   return (

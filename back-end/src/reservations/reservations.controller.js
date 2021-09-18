@@ -56,17 +56,21 @@ function hasValidDate(req, res, next) {
   }
   const formattedDate = data.reservation_date.split("-").reverse().join("-");
 
-  const reservation_date = data.reservation_date
+  const ToCheckDayOfTheWeek = data.reservation_date
     ? new Date(formattedDate)
     : today;
 
-  if (reservation_date.getDay() == 2) {
+  const ToCheckPastDate = data.reservation_date
+    ? new Date(data.reservation_date)
+    : today;
+
+  if (ToCheckDayOfTheWeek.getDay() == 2) {
     return next({
       status: 400,
       message: "The restaurant is closed on Tuesdays",
     });
   }
-  if (dateInPast(reservation_date)) {
+  if (dateInPast(ToCheckPastDate)) {
     return next({
       status: 400,
       message: "reservations can only be in the future",
