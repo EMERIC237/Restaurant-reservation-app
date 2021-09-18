@@ -31,6 +31,8 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
+  function nextHandler() {}
+  function previousHandler() {}
   if (reservationsError) {
     return (
       <main>
@@ -56,6 +58,26 @@ function Dashboard({ date }) {
           <Reservation detailed={true} reservations={reservations} />
         </div>
       )}
+      <div
+        class="btn-toolbar"
+        role="toolbar"
+        aria-label="Toolbar with button groups"
+      >
+        <div class="btn-group" role="group" aria-label="First group">
+          <button type="button" class="btn btn-secondary" onClick={nextHandler}>
+            Previous
+          </button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Third group">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onClick={previousHandler}
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </main>
   );
 }
