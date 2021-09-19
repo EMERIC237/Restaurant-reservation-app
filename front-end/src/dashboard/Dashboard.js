@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 import { listReservations } from "../utils/api";
 import Reservation from "./Reservation";
 import formatReservationDate from "../utils/format-reservation-date";
 import formatReservationTime from "../utils/format-reservation-time";
+import { previous, next } from "../utils/date-time";
 
 /**
  * Defines the dashboard page.
@@ -15,9 +16,10 @@ import formatReservationTime from "../utils/format-reservation-time";
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const history = useHistory();
   const search = useLocation().search;
   const dateFromQuery = new URLSearchParams(search).get("date");
-  const dateForUrl = dateFromQuery ? dateFromQuery : date;
+  let dateForUrl = dateFromQuery ? dateFromQuery : date;
   useEffect(loadDashboard, [dateForUrl]);
 
   function loadDashboard() {
@@ -31,8 +33,18 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
-  function nextHandler() {}
-  function previousHandler() {}
+  function nextHandler() {
+    history.push({
+      pathname: "/dashboard",
+      search: `?date=${next(dateForUrl)}`,
+    });
+  }
+  function previousHandler() {
+    history.push({
+      pathname: "/dashboard",
+      search: `?date=${previous(dateForUrl)}`,
+    });
+  }
   if (reservationsError) {
     return (
       <main>
@@ -59,20 +71,24 @@ function Dashboard({ date }) {
         </div>
       )}
       <div
-        class="btn-toolbar"
+        className="btn-toolbar"
         role="toolbar"
         aria-label="Toolbar with button groups"
       >
-        <div class="btn-group" role="group" aria-label="First group">
-          <button type="button" class="btn btn-secondary" onClick={nextHandler}>
+        <div className="btn-group" role="group" aria-label="First group">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => previousHandler()}
+          >
             Previous
           </button>
         </div>
-        <div class="btn-group" role="group" aria-label="Third group">
+        <div className="btn-group" role="group" aria-label="Third group">
           <button
             type="button"
-            class="btn btn-secondary"
-            onClick={previousHandler}
+            className="btn btn-secondary "
+            onClick={() => nextHandler()}
           >
             Next
           </button>
