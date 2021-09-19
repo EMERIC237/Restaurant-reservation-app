@@ -33,12 +33,20 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
+  function todayHandler() {
+    history.push({
+      pathname: "/dashboard",
+      search: `?date=${date}`,
+    });
+  }
+
   function nextHandler() {
     history.push({
       pathname: "/dashboard",
       search: `?date=${next(dateForUrl)}`,
     });
   }
+
   function previousHandler() {
     history.push({
       pathname: "/dashboard",
@@ -82,6 +90,15 @@ function Dashboard({ date }) {
             onClick={() => previousHandler()}
           >
             Previous
+          </button>
+        </div>
+        <div className="btn-group" role="group" aria-label="First group">
+          <button
+            type="button"
+            className="btn btn-info"
+            onClick={() => todayHandler()}
+          >
+            Today
           </button>
         </div>
         <div className="btn-group" role="group" aria-label="Third group">

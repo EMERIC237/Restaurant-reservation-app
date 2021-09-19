@@ -35,9 +35,6 @@ export default function CreateReservation() {
   function cancel() {
     history.goBack();
   }
-  if (creationError) {
-    console.log(typeof creationError, creationError);
-  }
   return (
     <>
       <h1>Create a reservation</h1>

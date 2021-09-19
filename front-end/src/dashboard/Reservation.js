@@ -25,6 +25,15 @@ function Reservation({ detailed, reservations }) {
         <td>{reservation_date}</td>
         <td>{reservation_time}</td>
         <td>{people}</td>
+        <td>
+          <a
+            className="btn btn-primary"
+            href={`/reservations/${reservation_id}/seat`}
+            role="button"
+          >
+            Seat
+          </a>
+        </td>
       </tr>
     )
   );
