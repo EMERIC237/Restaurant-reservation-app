@@ -31,7 +31,7 @@ function TableForm({ onSubmit, onCancel, tableError }) {
               className="form-control"
               value={table.table_name}
               required={true}
-              placeholder="First name of the client"
+              placeholder="Name the table here"
               onChange={changeHandler}
             />
           </div>
@@ -48,7 +48,9 @@ function TableForm({ onSubmit, onCancel, tableError }) {
               onChange={changeHandler}
             />
           </div>
-
+          {tableError ? (
+            <div className="alert alert-danger"> {tableError.message}</div>
+          ) : null}
           <button
             type="button"
             className="btn btn-secondary mr-2"

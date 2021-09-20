@@ -7,6 +7,7 @@ export default function CreateTable() {
   const [tableError, setTableError] = useState("");
   const history = useHistory();
   function submitHandler(table) {
+    table.capacity = Number(table.capacity);
     createTable(table).then(history.push(`/dashboard`)).catch(setTableError);
   }
 
@@ -16,7 +17,7 @@ export default function CreateTable() {
 
   return (
     <>
-      <h1>Seat The reservation to a new table</h1>
+      <h1>Create a new table for your restaurant</h1>
       <TableForm
         onCancel={cancel}
         onSubmit={submitHandler}

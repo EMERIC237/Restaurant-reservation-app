@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 
-function ReservationForm({ onSubmit, onCancel, creationError }) {
-  const initialState = {
+function ReservationForm({
+  onSubmit,
+  onCancel,
+  creationError,
+  initialState = {
     first_name: "",
     last_name: "",
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
     people: 1,
-  };
+  },
+}) {
   const [reservation, setReservation] = useState(initialState);
 
   function changeHandler({ target: { name, value } }) {

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
-import { listReservations } from "../utils/api";
-import Reservation from "./Reservation";
+import { listReservations, listTables } from "../utils/api";
 import formatReservationDate from "../utils/format-reservation-date";
 import formatReservationTime from "../utils/format-reservation-time";
 import { previous, next } from "../utils/date-time";
+import ReservationsList from "./ReservationsList";
+import TablesList from "./TablesList";
 
 /**
  * Defines the dashboard page.
@@ -13,7 +14,7 @@ import { previous, next } from "../utils/date-time";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }) {
+function Dashboard({ date, tables, setTables, setTablesError }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory();
@@ -25,11 +26,12 @@ function Dashboard({ date }) {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations(dateForUrl, abortController.signal)
+    listReservations(dateForUrl, false, abortController.signal)
       .then(formatReservationDate)
       .then(formatReservationTime)
       .then(setReservations)
       .catch(setReservationsError);
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
@@ -66,18 +68,25 @@ function Dashboard({ date }) {
   }
 
   return (
-    <main>
+    <main className="container">
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for the date :{dateForUrl}</h4>
-      </div>
-      {reservations.length === 0 ? (
-        <div>No Reservations For this date</div>
-      ) : (
-        <div>
-          <Reservation detailed={true} reservations={reservations} />
+      <div className="row">
+        <div className="col-md-4">
+          <div className="d-md-flex mb-3">
+            <h4 className="mb-0">Reservations for the date :{dateForUrl}</h4>
+          </div>
+          {reservations.length === 0 ? (
+            <div>No Reservations For this date</div>
+          ) : (
+            <div>
+              <ReservationsList detailed={true} reservations={reservations} />
+            </div>
+          )}
         </div>
-      )}
+        <div className="col-md-4 offset-md-4">
+          <TablesList tables={tables} />
+        </div>
+      </div>
       <div
         className="btn-toolbar"
         role="toolbar"
