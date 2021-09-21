@@ -11,7 +11,7 @@ function SearchReservation() {
   function changeHandler({ target: { name, value } }) {
     setSearchValue(value);
   }
-  console.log(typeof searchValue);
+  
   const onSubmit = (searchValue) => {
     setDisplay(true);
     listReservations(searchValue, true)
@@ -47,7 +47,7 @@ function SearchReservation() {
       <main>
         {display ? (
           foundReservations.length === 0 ? (
-            <div>No reservations found</div>
+            <h2>No reservations found</h2>
           ) : (
             <div>
               <ReservationsList

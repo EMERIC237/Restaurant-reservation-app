@@ -41,14 +41,14 @@ function ReservationsList({ detailed, reservations }) {
         <td>{reservation_date}</td>
         <td>{reservation_time}</td>
         <td>{people}</td>
-        <td>{status}</td>
+        <td data-reservation-id-status={reservation_id}>{status}</td>
         {status === "booked" ? (
           <td>
             <a
               className="btn btn-primary"
               href={`/reservations/${reservation_id}/seat`}
               role="button"
-              onClick={() => seatHandler()}
+              onClick={() => seatHandler(reservation_id)}
             >
               Seat
             </a>
@@ -59,16 +59,21 @@ function ReservationsList({ detailed, reservations }) {
             className="btn btn-primary"
             href={`/reservations/${reservation_id}/edit`}
             role="button"
-            onClick={() => seatHandler()}
           >
             Edit
           </a>
         </td>
-        <td>
-          <button className="btn btn-danger" onClick={() => cancelHandler()}>
-            Cancel
-          </button>
-        </td>
+        {status !== "cancelled" ? (
+          <td>
+            <button
+              className="btn btn-danger"
+              data-reservation-id-cancel={reservation_id}
+              onClick={() => cancelHandler(reservation_id)}
+            >
+              Cancel
+            </button>
+          </td>
+        ) : null}
       </tr>
     )
   );

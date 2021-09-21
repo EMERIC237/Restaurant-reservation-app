@@ -4,6 +4,7 @@ function ReservationForm({
   onSubmit,
   onCancel,
   Error,
+  Edit,
   initialState = {
     first_name: "",
     last_name: "",
@@ -15,8 +16,10 @@ function ReservationForm({
 }) {
   const [reservation, setReservation] = useState(initialState);
   useEffect(() => {
-    setReservation(initialState);
-  }, [initialState]);
+    if (Edit) {
+      setReservation(initialState);
+    }
+  }, [initialState, Edit]);
 
   function changeHandler({ target: { name, value } }) {
     setReservation((prevState) => ({
@@ -29,6 +32,10 @@ function ReservationForm({
     event.stopPropagation();
     onSubmit(reservation);
   }
+
+  const ErrorList = Error.map((err) => (
+    <div className="alert alert-danger"> {err.message}</div>
+  ));
   return (
     <>
       <form onSubmit={submitHandler}>
@@ -83,6 +90,7 @@ function ReservationForm({
               value={reservation.reservation_date}
               required={true}
               placeholder="YYYY-MM-DD"
+              pattern="\d{4}-\d{2}-\d{2}"
               onChange={changeHandler}
             />
           </div>
@@ -96,6 +104,7 @@ function ReservationForm({
               value={reservation.reservation_time}
               required={true}
               placeholder="HH:MM"
+              pattern="[0-9]{2}:[0-9]{2}"
               onChange={changeHandler}
             />
           </div>
@@ -113,9 +122,7 @@ function ReservationForm({
               onChange={changeHandler}
             />
           </div>
-          {Error ? (
-            <div className="alert alert-danger"> {Error.message}</div>
-          ) : null}
+          {Error.length ? ErrorList : null}
           <button
             type="button"
             className="btn btn-secondary mr-2"

@@ -14,7 +14,11 @@ function TableUnit({ table }) {
       <div className="card-body justify-content-between">
         <p className="text-start">{table.capacity}</p>
         <p className="text-end">
-          {table.reservation_id ? <span>Occupied</span> : <span>Free</span>}
+          {table.reservation_id ? (
+            <span data-table-id-status={table.table_id}>Occupied</span>
+          ) : (
+            <span data-table-id-status={table.table_id}>Free</span>
+          )}
         </p>
       </div>
       <div className="card-footer">
@@ -22,6 +26,7 @@ function TableUnit({ table }) {
           <button
             type="button"
             className="btn btn-secondary mr-2 "
+            data-table-id-finish={table.table_id}
             onClick={() => finishHandler()}
           >
             Finish

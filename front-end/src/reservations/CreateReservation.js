@@ -42,6 +42,7 @@ export default function CreateReservation() {
         onCancel={cancel}
         onSubmit={submitHandler}
         Error={creationError}
+        Edit={false}
       />
     </>
   );

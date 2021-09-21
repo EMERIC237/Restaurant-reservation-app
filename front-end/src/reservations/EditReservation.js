@@ -8,7 +8,7 @@ import ReservationForm from "./ReservationForm";
 function EditReservation() {
   const history = useHistory();
   const { reservation_id } = useParams();
-  const [editError, setEditError] = useState(null);
+  const [editError, setEditError] = useState([]);
   const [reservation, setReservation] = useState({
     first_name: "",
     last_name: "",
@@ -23,8 +23,8 @@ function EditReservation() {
       .then(formatReservationTime)
       .then(setReservation);
   }, [reservation_id]);
-  ;
   function submitHandler(updatedReservation) {
+    updatedReservation.people = parseInt(updatedReservation.people);
     if (reservation.status !== "booked") {
       return (
         <div className="alert alert-danger">
@@ -33,8 +33,10 @@ function EditReservation() {
       );
     } else {
       updateReservation(updatedReservation)
-        .then(history.goBack())
-        .catch(setEditError);
+        .then((savedReservation) =>
+          history.push(`/dashboard?date=${savedReservation.reservation_date}`)
+        )
+        .catch((error) => setEditError((prevError) => [...prevError, error]));
     }
   }
   function cancel() {
@@ -46,6 +48,7 @@ function EditReservation() {
       onSubmit={submitHandler}
       onCancel={cancel}
       Error={editError}
+      Edit={true}
       initialState={reservation}
     />
   ) : (
