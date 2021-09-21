@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function ReservationForm({
   onSubmit,
   onCancel,
-  creationError,
+  Error,
   initialState = {
     first_name: "",
     last_name: "",
@@ -14,6 +14,9 @@ function ReservationForm({
   },
 }) {
   const [reservation, setReservation] = useState(initialState);
+  useEffect(() => {
+    setReservation(initialState);
+  }, [initialState]);
 
   function changeHandler({ target: { name, value } }) {
     setReservation((prevState) => ({
@@ -110,8 +113,8 @@ function ReservationForm({
               onChange={changeHandler}
             />
           </div>
-          {creationError ? (
-            <div className="alert alert-danger"> {creationError.message}</div>
+          {Error ? (
+            <div className="alert alert-danger"> {Error.message}</div>
           ) : null}
           <button
             type="button"

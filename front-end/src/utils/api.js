@@ -67,10 +67,10 @@ async function fetchJson(url, options, onCancel) {
 //     .then(formatReservationDate)
 //     .then(formatReservationTime);
 // }
-export async function listReservations(date, mobile_number, signal) {
+export async function listReservations(params, mobile_number, signal) {
   const url = mobile_number
-    ? `${API_BASE_URL}/reservations?mobile_phone=${mobile_number}`
-    : `${API_BASE_URL}/reservations?date=${date}`;
+    ? `${API_BASE_URL}/reservations?mobile_number=${params}`
+    : `${API_BASE_URL}/reservations?date=${params}`;
   return await fetchJson(url, { headers, signal }, []);
 }
 
@@ -217,7 +217,7 @@ export async function AssignTable(table_id, reservation_id, signal) {
  */
 
 export async function UnassignTable(table_id, signal) {
-  const url = `${API_BASE_URL}/${table_id}/seat/`;
+  const url = `${API_BASE_URL}/tables/${table_id}/seat/`;
   const options = { method: "DELETE", signal };
   return await fetchJson(url, options);
 }

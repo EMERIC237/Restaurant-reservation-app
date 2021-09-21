@@ -1,5 +1,5 @@
 import React from "react";
-import UnassignTable, { updateReservationStatus } from "../utils/api";
+import { UnassignTable, updateReservationStatus } from "../utils/api";
 
 function TableUnit({ table }) {
   function finishHandler() {
@@ -13,6 +13,9 @@ function TableUnit({ table }) {
       <div className="card-header">{table.table_name}</div>
       <div className="card-body justify-content-between">
         <p className="text-start">{table.capacity}</p>
+        <p className="text-end">
+          {table.reservation_id ? <span>Occupied</span> : <span>Free</span>}
+        </p>
       </div>
       <div className="card-footer">
         {table.reservation_id ? (
