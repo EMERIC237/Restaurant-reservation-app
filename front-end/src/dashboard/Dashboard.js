@@ -21,7 +21,7 @@ function Dashboard({ date, tables, setTables, setTablesError }) {
   const search = useLocation().search;
   const dateFromQuery = new URLSearchParams(search).get("date");
   let dateForUrl = dateFromQuery ? dateFromQuery : date;
-  useEffect(loadDashboard, [dateForUrl]);
+  useEffect(loadDashboard, [dateForUrl,setTables,setTablesError]);
 
   function loadDashboard() {
     const abortController = new AbortController();

@@ -1,6 +1,7 @@
 const reservationsService = require("./reservations.service");
 const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const dayjs = require("dayjs");
 const VALID_PROPERTIES = [
   "first_name",
   "last_name",
@@ -12,11 +13,8 @@ const VALID_PROPERTIES = [
 const VALID_STATUS = ["booked", "seated", "finished", "cancelled"];
 
 const isDate = (dateStr) => {
-  return (
-    dateStr.length >= 10 &&
-    new Date(dateStr) !== "Invalid Date" &&
-    !isNaN(new Date(dateStr))
-  );
+  let day1 = dayjs(dateStr);
+  return day1.isValid();
 };
 
 const dateInPast = (dateToTest) => {
@@ -48,23 +46,19 @@ const isTime = (timeStr) => {
 function hasValidDate(req, res, next) {
   const { data = {} } = req.body;
   let today = new Date();
+  let testDay = dayjs(data.reservation_date);
   if (!isDate(data.reservation_date)) {
     return next({
       status: 400,
       message: "reservation_date must be a valid date",
     });
   }
-  const formattedDate = data.reservation_date.split("-").reverse().join("-");
-
-  const ToCheckDayOfTheWeek = data.reservation_date
-    ? new Date(formattedDate)
-    : today;
 
   const ToCheckPastDate = data.reservation_date
     ? new Date(data.reservation_date)
     : today;
 
-  if (ToCheckDayOfTheWeek.getDay() == 2) {
+  if (testDay.format("dddd") === "Tuesday") {
     return next({
       status: 400,
       message: "The restaurant is closed on Tuesdays",

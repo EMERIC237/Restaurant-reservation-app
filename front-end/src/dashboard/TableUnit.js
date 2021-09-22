@@ -8,7 +8,7 @@ function TableUnit({ table }) {
       UnassignTable(table.table_id).then(window.location.reload());
     }
   }
-  console.log(table);
+
   return (
     <ol className="breadcrumb">
       <li className="breadcrumb-item">{table.table_name}</li>

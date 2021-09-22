@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { listReservations } from "../utils/api";
 import formatReservationDate from "../utils/format-reservation-date";
 import formatReservationTime from "../utils/format-reservation-time";
@@ -11,7 +11,7 @@ function SearchReservation() {
   function changeHandler({ target: { name, value } }) {
     setSearchValue(value);
   }
-  
+
   const onSubmit = (searchValue) => {
     setDisplay(true);
     listReservations(searchValue, true)

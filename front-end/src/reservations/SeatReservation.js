@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router";
-import { AssignTable, updateReservationStatus } from "../utils/api";
+import { AssignTable } from "../utils/api";
 import SeatForm from "./SeatForm";
 
 function SeatReservation({ tables, setTables }) {
@@ -12,7 +12,7 @@ function SeatReservation({ tables, setTables }) {
     //Don't do anything if the choice is nit updated
     if (tableChoice) {
       AssignTable(tableChoice.table_id, reservation_id)
-        .then(history.push(`/dashboard`))
+        .then(() => history.push(`/dashboard`))
         .catch(setChoiceError);
       // updateReservationStatus(reservation_id, "seated");
     }

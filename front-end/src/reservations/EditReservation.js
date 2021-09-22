@@ -8,7 +8,7 @@ import ReservationForm from "./ReservationForm";
 function EditReservation() {
   const history = useHistory();
   const { reservation_id } = useParams();
-  const [editError, setEditError] = useState([]);
+  const [editError, setEditError] = useState(null);
   const [reservation, setReservation] = useState({
     first_name: "",
     last_name: "",
@@ -36,7 +36,7 @@ function EditReservation() {
         .then((savedReservation) =>
           history.push(`/dashboard?date=${savedReservation.reservation_date}`)
         )
-        .catch((error) => setEditError((prevError) => [...prevError, error]));
+        .catch(setEditError);
     }
   }
   function cancel() {

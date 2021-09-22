@@ -33,9 +33,6 @@ function ReservationForm({
     onSubmit(reservation);
   }
 
-  const ErrorList = Error.map((err) => (
-    <div className="alert alert-danger"> {err.message}</div>
-  ));
   return (
     <>
       <form onSubmit={submitHandler}>
@@ -122,7 +119,9 @@ function ReservationForm({
               onChange={changeHandler}
             />
           </div>
-          {Error.length ? ErrorList : null}
+          {Error ? (
+            <div className="alert alert-danger"> {Error.message}</div>
+          ) : null}
           <button
             type="button"
             className="btn btn-secondary mr-2"
