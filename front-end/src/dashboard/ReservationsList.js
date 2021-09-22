@@ -13,9 +13,7 @@ function ReservationsList({ detailed, reservations }) {
       );
     }
   }
-  function seatHandler(reservation_id) {
-    updateReservationStatus(reservation_id, "seated");
-  }
+
   const reservationList = reservations.map((reservation, index) => (
     <li key={index}>
       {reservation.last_name},{reservation.reservation_date}
@@ -48,7 +46,6 @@ function ReservationsList({ detailed, reservations }) {
               className="btn btn-primary"
               href={`/reservations/${reservation_id}/seat`}
               role="button"
-              onClick={() => seatHandler(reservation_id)}
             >
               Seat
             </a>
@@ -85,7 +82,7 @@ function ReservationsList({ detailed, reservations }) {
     );
   }
   return (
-    <table className="table table-striped">
+    <table className="table table-striped table-sm table-responsive-sm">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -94,6 +91,7 @@ function ReservationsList({ detailed, reservations }) {
           <th scope="col">Reservation Date</th>
           <th scope="col">Reservation Time</th>
           <th scope="col">Number of People</th>
+          <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>{reservationTable}</tbody>

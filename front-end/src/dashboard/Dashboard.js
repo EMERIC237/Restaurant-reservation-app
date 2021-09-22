@@ -70,8 +70,8 @@ function Dashboard({ date, tables, setTables, setTablesError }) {
   return (
     <main className="container">
       <h1>Dashboard</h1>
-      <div className="row">
-        <div className="col-md-4">
+      <div className="d-flex flex-row flex-wrap justify-content-between">
+        <div>
           <div className="d-md-flex mb-3">
             <h4 className="mb-0">Reservations for the date :{dateForUrl}</h4>
           </div>
@@ -83,7 +83,7 @@ function Dashboard({ date, tables, setTables, setTablesError }) {
             </div>
           )}
         </div>
-        <div className="col-md-4 offset-md-4">
+        <div>
           <TablesList tables={tables} />
         </div>
       </div>
