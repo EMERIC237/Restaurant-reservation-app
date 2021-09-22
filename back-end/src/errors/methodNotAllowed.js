@@ -1,3 +1,7 @@
+/**
+ * Express API handler for Not Allowed Methods.
+ */
+
 function methodNotAllowed(req, res, next) {
   next({
     status: 405,

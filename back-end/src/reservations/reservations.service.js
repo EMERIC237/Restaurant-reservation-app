@@ -5,9 +5,7 @@
  */
 const knex = require("../db/connection");
 const TableName = "reservations";
-// function list() {
-//   return knex("reservations").select("*");
-// }
+
 function read(reservation_id) {
   return knex(TableName).select("*").where({ reservation_id }).first();
 }
