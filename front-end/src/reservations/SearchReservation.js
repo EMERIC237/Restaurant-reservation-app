@@ -31,7 +31,7 @@ function SearchReservation() {
       <header>
         <form className="d-flex" onSubmit={submitHandler}>
           <input
-            name="mobile-number"
+            name="mobile_number"
             className="form-control me-2"
             type="search"
             placeholder="Enter a customer's phone number"
