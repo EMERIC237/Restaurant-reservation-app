@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
 
 import { listTables } from "../utils/api";
-
+/**
+ * Form to seat a reservation
+ * @param onSubmit
+ * Function to handle the <submit> button
+ * @param onCancel
+ * Function to handle the <cancel> button
+ * @param choiceError && tablesError - error to display if an error occurred
+ * @param tables - List of tables
+ * @param {useState functions}: setTables,setTablesErrors
+ * @returns {JSX.Element}
+ */
 function SeatForm({
   onSubmit,
   onCancel,

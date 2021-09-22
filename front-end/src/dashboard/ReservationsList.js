@@ -1,6 +1,13 @@
 import React from "react";
 import { updateReservationStatus } from "../utils/api";
-
+/**
+ * Defines the list of reservations in a table
+ * @param detailed
+ * Boolean to defines the view type of the reservations list
+ * @param reservations
+ * The list of reservations
+ * @returns {JSX.Element}
+ */
 function ReservationsList({ detailed, reservations }) {
   function cancelHandler(reservation_id) {
     if (

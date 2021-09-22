@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-
+/**
+ * Form to create or edit a reservation
+ * @param onSubmit
+ * Function to handle the <submit> button
+ * @param onCancel
+ * Function to handle the <cancel> button
+ * @param Error - error to display if an error occurred
+ * @param Edit - Boolean to check whether we are editing or creating a reservation
+ * @param initialState
+ * Object containing the initial value of the form
+ * @returns {JSX.Element}
+ */
 function ReservationForm({
   onSubmit,
   onCancel,

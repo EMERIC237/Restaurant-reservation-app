@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-
+/**
+ * Form to create a table
+ * @param onSubmit
+ * Function to handle the <submit> button
+ * @param onCancel
+ * Function to handle the <cancel> button
+ * @param tableError - error to display if an error occurred
+ * @param initialState
+ * Object containing the initial value of the form
+ * @returns {JSX.Element}
+ */
 function TableForm({ onSubmit, onCancel, tableError }) {
   const initialState = {
     table_name: "",
