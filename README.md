@@ -58,7 +58,7 @@ so that users do not accidentally create a reservation for a time we cannot acco
 
 #### Screenshots
 
-![Create Reservation](front-end/.screenshots/us-01-submit-before.png)
+![Create Reservation](/Screenshots/Create_reservation.png)
 
 ### Seat reservation
 
@@ -69,9 +69,7 @@ so that I know which tables are occupied and free.
 
 #### Screenshots
 
-![Seat Reservation](front-end/.screenshots/us-04-dashboard-seat-button-before.png)
-![Seat Reservation](front-end/.screenshots/us-06-seated-before.png)
-![Seat Reservation](front-end/.screenshots/us-04-seat-reservation-start.png)
+![Seat Reservation](/Screenshots/seat_reservation.PNG)
 
 ### US-05 Finish an occupied table
 
@@ -81,7 +79,7 @@ so that I can seat new guests at that table.<br/>
 
 #### Screenshots
 
-![Finish Occupied tables](front-end/.screenshots/us-06-finish-after.png)
+![Finish Occupied tables](/Screenshots/finish_tables.PNG)
 
 ### US-06 Reservation Status
 
@@ -91,7 +89,7 @@ so that I can see which reservation parties are seated, and finished reservation
 
 #### Screenshots
 
-![Reservation status](front-end/.screenshots/us-06-seated-before.png)
+![Reservation status](/Screenshots/seat_reservation.PNG)
 
 ### US-07 Search for a reservation by phone number
 
@@ -101,7 +99,7 @@ so that I can quickly access a customer's reservation when they call about their
 
 #### Screenshots
 
-![Reservation search](front-end/.screenshots/us-07-search-reservations-submit-valid-after.png)
+![Reservation search](/Screenshots/seacrh_reservation.PNG)
 
 ### US-08 Change an existing reservation
 
@@ -111,7 +109,7 @@ so that reservations are accurate and current.
 
 #### Screenshots
 
-![Reservation status](front-end/.screenshots/us-08-edit-reservation-submit-before.png)
+![Reservation status](/Screenshots/Edit_reservation.PNG)
 
 ### API
 
