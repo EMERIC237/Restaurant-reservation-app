@@ -1,7 +1,7 @@
 # Capstone: Restaurant Reservation System
 
 #Link to the deployed APP:
-[Restaurant Reservation APP] (https://pure-shore-17093.herokuapp.com/dashboard)
+[Restaurant Reservation APP] (https://resto-joy.herokuapp.com/dashboard)
 
 ### App story
 
