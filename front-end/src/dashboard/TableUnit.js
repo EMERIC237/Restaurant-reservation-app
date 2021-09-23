@@ -15,7 +15,7 @@ function TableUnit({ table }) {
   }
 
   return (
-    <ol className="breadcrumb">
+    <ol className="breadcrumb" style={{color:"green"}}>
       <li className="breadcrumb-item">{table.table_name}</li>
       <li className="breadcrumb-item">{table.capacity}</li>
       <li className="breadcrumb-item">

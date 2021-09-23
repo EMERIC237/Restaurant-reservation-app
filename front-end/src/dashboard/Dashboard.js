@@ -7,6 +7,7 @@ import formatReservationTime from "../utils/format-reservation-time";
 import { previous, next } from "../utils/date-time";
 import ReservationsList from "./ReservationsList";
 import TablesList from "./TablesList";
+import useWindowSize from "../utils/useWindowSize";
 import useQuery from "../utils/useQuery";
 
 /**
@@ -22,6 +23,7 @@ function Dashboard({ date, tables, setTables, setTablesError }) {
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory();
   const query = useQuery();
+  const { width } = useWindowSize();
   const dateFromQuery = query.get("date");
   let dateForUrl = dateFromQuery ? dateFromQuery : date;
   useEffect(loadDashboard, [dateForUrl, setTables, setTablesError]);
@@ -80,9 +82,13 @@ function Dashboard({ date, tables, setTables, setTablesError }) {
           </div>
           {reservations.length === 0 ? (
             <div>No Reservations For this date</div>
-          ) : (
+          ) : width > 800 ? (
             <div>
               <ReservationsList detailed={true} reservations={reservations} />
+            </div>
+          ) : (
+            <div>
+              <ReservationsList detailed={false} reservations={reservations} />
             </div>
           )}
         </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import Menu from "./Menu";
 import Routes from "./Routes";
+import resto from "../images/resto.jpg";
 
 import "./Layout.css";
 
@@ -18,7 +19,14 @@ function Layout() {
         <div className="col-md-2 side-bar">
           <Menu />
         </div>
-        <div className="col">
+        <div
+          className="col"
+          style={{
+            backgroundImage: `url(${resto})`,
+            backgroundSize: "inherit",
+            color: "white",
+          }}
+        >
           <Routes />
         </div>
       </div>
