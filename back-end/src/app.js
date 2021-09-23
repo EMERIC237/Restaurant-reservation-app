@@ -1,9 +1,9 @@
 const path = require("path");
-
-require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
-
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
+
+
 
 const errorHandler = require("./errors/errorHandler");
 const notFound = require("./errors/notFound");
@@ -14,10 +14,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-//point to the build folder if we are in the production environment
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "..", "..", "front-end/build")));
-// }
+
 
 app.use("/reservations", reservationsRouter);
 app.use("/tables", tablesRouter);
