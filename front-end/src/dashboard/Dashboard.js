@@ -82,13 +82,12 @@ function Dashboard({ date, tables, setTables, setTablesError }) {
           </div>
           {reservations.length === 0 ? (
             <div>No Reservations For this date</div>
-          ) : width > 800 ? (
-            <div>
-              <ReservationsList detailed={true} reservations={reservations} />
-            </div>
           ) : (
             <div>
-              <ReservationsList detailed={false} reservations={reservations} />
+              <ReservationsList
+                detailed={width > 800}
+                reservations={reservations}
+              />
             </div>
           )}
         </div>
